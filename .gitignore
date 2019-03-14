@@ -1,4 +1,8 @@
 #repo description files
 LICENSE
 README.md
-config.ini
+
+#sample files
+repo-to-update.properties
+
+#locally script also will skip .gitignore file and .git/ directory
