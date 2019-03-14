@@ -16,3 +16,4 @@ Currently script can do the following:
 1. Clone this repository locally
 2. Create a crontab entry to call this script (every 5minutes, every hour or daily - up to you)
 3. Create " .properties" file for any git repos you need to update
+4. ***Please note that script you define as "post_update" variable in ".properties" file will always be executed when changes between remote and local repo are found***
