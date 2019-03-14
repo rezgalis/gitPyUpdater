@@ -45,9 +45,9 @@ def write_last_log(subdir, file):
 def update_from_git(git_remote, localpath):
 		is_new = False
 		try:
-				repo = Repo(localpath+ 'remote-git')
+				repo = Repo(localpath+ '/remote-git')
 		except:
-				repo = Repo.init(localpath+ 'remote-git')
+				repo = Repo.init(localpath+ '/remote-git')
 				remote = repo.create_remote('origin', git_remote)
 				remote.fetch() 
 				repo.create_head('master', remote.refs.master).set_tracking_branch(remote.refs.master).checkout()
@@ -81,7 +81,7 @@ def copy_updated_files(localpath):
 	ignored_folders.add('.git/')
 
 	for subdir, dirs, files in os.walk(full_remote_path, topdown=True):
-		this_subdir = subdir.replace(full_remote_path,'') + '/' 
+		this_subdir = subdir.replace(full_remote_path,'/') 
 		
 		if this_subdir in ignored_folders:
 			[dirs.remove(d) for d in list(dirs)]
@@ -91,8 +91,8 @@ def copy_updated_files(localpath):
 			this_file = (os.path.join(subdir, file)).replace(full_remote_path,'')
 			if this_file not in ignored_files:
 				git_file = os.path.join(subdir, file)
-				local_file = git_file.replace('remote-git/', '')
-				local_dir = subdir.replace('remote-git/', '')
+				local_file = git_file.replace('/remote-git/', '/')
+				local_dir = subdir.replace('/remote-git/', '/')
 				new_checksum = sha256_checksum(git_file)
 				ex_checksum = ''
 				if os.path.exists(local_file):
