@@ -68,7 +68,7 @@ def update_from_git(git_remote, localpath):
 #function for taking files from git repo and copying to local folder
 def copy_updated_files(localpath):
 	global log_content
-	full_remote_path = localpath+ '/remote-git/'
+	full_remote_path = localpath+ 'remote-git/'
 	#get .gitignore files & folders
 	ignored_folders = set()
 	ignored_files = set()
@@ -81,8 +81,8 @@ def copy_updated_files(localpath):
 	ignored_folders.add('.git/')
 
 	for subdir, dirs, files in os.walk(full_remote_path, topdown=True):
-		this_subdir = subdir.replace(full_remote_path,'/') 
-		
+		this_subdir = subdir.replace(full_remote_path,'') + '/' 
+				
 		if this_subdir in ignored_folders:
 			[dirs.remove(d) for d in list(dirs)]
 			continue
@@ -122,14 +122,15 @@ def process_properties_files():
 	for subdir, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 		for file in files:
 			ext = os.path.splitext(file)[-1].lower()
-			if ext == '.properties':
+			
+			if ext == '.properties' and '/remote-git' not in subdir:
 				config.read(os.path.join(subdir, file))
 				script_name = os.path.splitext(file)[0].lower()
 				should_update = is_update_time(subdir, script_name, config['DEFAULT']['check_frequency'])
 				if should_update:
-						log_content = str(time.time()) + '\nRunning update based on ' + file
+						log_content += '\nRunning update based on ' + file
 						log_content += '\nTime (UTC): ' + datetime.utcnow().strftime("%d-%m-%Y @ %H:%M:%S")
-						#TODO: wrap git update in try catch to get errors for log - try catch for reach
+
 						try:
 							update_from_git(config['DEFAULT']['git_remote'], config['DEFAULT']['local_path'])
 						except Exception as e:
