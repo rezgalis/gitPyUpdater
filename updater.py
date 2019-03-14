@@ -127,7 +127,7 @@ def process_properties_files():
 				script_name = os.path.splitext(file)[0].lower()
 				should_update = is_update_time(subdir, script_name, config['DEFAULT']['check_frequency'])
 				if should_update:
-            log_content = str(time.time()) + '\nRunning update based on ' + file
+						log_content = str(time.time()) + '\nRunning update based on ' + file
 						log_content += '\nTime (UTC): ' + datetime.utcnow().strftime("%d-%m-%Y @ %H:%M:%S")
 						#TODO: wrap git update in try catch to get errors for log - try catch for reach
 						try:
