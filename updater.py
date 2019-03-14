@@ -68,7 +68,7 @@ def update_from_git(git_remote, localpath):
 #function for taking files from git repo and copying to local folder
 def copy_updated_files(localpath):
 	global log_content
-	full_remote_path = localpath+ 'remote-git/'
+	full_remote_path = localpath+ '/remote-git/'
 	#get .gitignore files & folders
 	ignored_folders = set()
 	ignored_files = set()
