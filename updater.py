@@ -143,7 +143,7 @@ def process_properties_files():
 								call_post_install_script(config['DEFAULT']['post_update'])
 						except Exception as e:
 							log_content += '\ncall_post_install_script error: ' + str(e)
-			write_last_log(subdir, script_name)
+				write_last_log(subdir, script_name)
 
 
 #script run
