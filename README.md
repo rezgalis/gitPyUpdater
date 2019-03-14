@@ -11,9 +11,13 @@ Currently script can do the following:
 * can run any post-update command - see "post_update"  param in config
 * uses " .gitignore" file to skip files that should not be copied locally
 
+### Pre-requisites
+python3 (apt-get install python3)
+(optional) python3-pip (apt-get install python3-pip)
+git (pip3 install gitpython)
 
 ## How to set it up
 1. Clone this repository locally
 2. Create a crontab entry to call this script (every 5minutes, every hour or daily - up to you)
 3. Create " .properties" file for any git repos you need to update
-4. ***Please note that script you define as "post_update" variable in ".properties" file will always be executed when changes between remote and local repo are found***
+4. ***Please note that script you define as "post_update" variable in ".properties" file will always be executed when changes between remote and local repo are found (i.e. even if only ignored files were updated)***
