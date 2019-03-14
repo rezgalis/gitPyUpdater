@@ -147,6 +147,6 @@ def process_properties_files():
 				write_last_log(subdir, script_name)
 
 
-
+#run script
 if __name__== "__main__":
 	process_properties_files()
