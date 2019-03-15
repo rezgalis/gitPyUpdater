@@ -128,23 +128,23 @@ def process_properties_files():
 				script_name = os.path.splitext(file)[0].lower()
 				should_update = is_update_time(subdir, script_name, config['DEFAULT']['check_frequency'])
 				if should_update:
-						log_content += '\nRunning update based on ' + file
-						log_content += '\nTime (UTC): ' + datetime.utcnow().strftime("%d-%m-%Y @ %H:%M:%S")
+					log_content += '\nRunning update based on ' + file
+					log_content += '\nTime (UTC): ' + datetime.utcnow().strftime("%d-%m-%Y @ %H:%M:%S")
 
-						try:
-							update_from_git(config['DEFAULT']['git_remote'], config['DEFAULT']['local_path'])
-						except Exception as e:
-							log_content += '\nupdate_from_git error: ' + str(e)
-						try:
-							copy_updated_files(config['DEFAULT']['local_path'])
-						except Exception as e:
-							log_content += '\ncopy_updated_files error: ' + str(e)
-						try:
-							if len(config['DEFAULT']['post_update'])>1:
-								call_post_install_script(config['DEFAULT']['post_update'])
-						except Exception as e:
-							log_content += '\ncall_post_install_script error: ' + str(e)
-				write_last_log(subdir, script_name)
+					try:
+						update_from_git(config['DEFAULT']['git_remote'], config['DEFAULT']['local_path'])
+					except Exception as e:
+						log_content += '\nupdate_from_git error: ' + str(e)
+					try:
+						copy_updated_files(config['DEFAULT']['local_path'])
+					except Exception as e:
+						log_content += '\ncopy_updated_files error: ' + str(e)
+					try:
+						if len(config['DEFAULT']['post_update'])>1:
+							call_post_install_script(config['DEFAULT']['post_update'])
+					except Exception as e:
+						log_content += '\ncall_post_install_script error: ' + str(e)
+					write_last_log(subdir, script_name)
 
 
 #run script
