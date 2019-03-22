@@ -6,63 +6,62 @@ from datetime import datetime
 from git import Repo
 
 config = configparser.ConfigParser()
-log_content = str(time.time())
+log_content = ''
 
 #utility function to get SHA-256 checksums
 def sha256_checksum(filename, block_size=65536):
-	sha256 = hashlib.sha256()
-	with open(filename, 'rb') as f:
-		for block in iter(lambda: f.read(block_size), b''):
-			sha256.update(block)
+    sha256 = hashlib.sha256()
+    with open(filename, 'rb') as f:
+	    for block in iter(lambda: f.read(block_size), b''):
+		    sha256.update(block)
 	return sha256.hexdigest()
 
 
 #function to check if script should be updated
 def is_update_time(subdir, file, freq):
-		should_run_update = True
-		try:
-				f = open(os.path.join(subdir, file)+'.lastlog', 'r')
-				timestamp = int(float(f.readline()))
-				prev_time = datetime.fromtimestamp(timestamp)
-				f.close()
-				diff = datetime.now() - prev_time
-				
-				if diff.seconds/60/60<int(freq):
-						should_run_update = False
-		except Exception:
-			 pass
-		return should_run_update
+    should_run_update = True
+    try:
+		f = open(os.path.join(subdir, file)+'.lastlog', 'r')
+		timestamp = int(float(f.readline()))
+		prev_time = datetime.fromtimestamp(timestamp)
+		f.close()
+		diff = datetime.now() - prev_time		
+		if diff.seconds/60/60<int(freq):
+			should_run_update = False
+	except Exception:
+		 pass
+	return should_run_update
 
 
 #function to write to last log details
 def write_last_log(subdir, file):
-		f = open(os.path.join(subdir, file)+'.lastlog', 'w')
-		f.write(log_content)
-		f.close()
+	f = open(os.path.join(subdir, file)+'.lastlog', 'w')
+	f.write(log_content)
+	f.close()
 
 
 #function for cloning remote git repo locally and checking for changes
 def update_from_git(git_remote, localpath):
-		is_new = False
-		try:
-				repo = Repo(localpath+ '/remote-git')
-		except:
-				repo = Repo.init(localpath+ '/remote-git')
-				remote = repo.create_remote('origin', git_remote)
-				remote.fetch() 
-				repo.create_head('master', remote.refs.master).set_tracking_branch(remote.refs.master).checkout()
-				is_new = True
+	is_new = False
+	try:
+		repo = Repo(localpath+ '/remote-git')
+	except:
+		repo = Repo.init(localpath+ '/remote-git')
+		remote = repo.create_remote('origin', git_remote)
+		remote.fetch() 
+		repo.create_head('master', remote.refs.master).set_tracking_branch(remote.refs.master).checkout()
+		is_new = True
 	
-		origin = repo.remotes.origin
-		origin.fetch()
-		checksum_remote = origin.refs.master.commit
-		checksum_local = repo.head.commit
+	origin = repo.remotes.origin
+	origin.fetch()
+	checksum_remote = origin.refs.master.commit
+	checksum_local = repo.head.commit
 	
-		if checksum_remote!=checksum_local or is_new:
-				repo.config_writer().set_value('user', 'name', 'default.repo').release()
-				repo.config_writer().set_value('user', 'email', 'default.repo').release()
-				repo.git.stash()
-				repo.git.merge()
+	if checksum_remote!=checksum_local or is_new:
+		repo.config_writer().set_value('user', 'name', 'default.repo').release()
+		repo.config_writer().set_value('user', 'email', 'default.repo').release()
+		repo.git.stash()
+		repo.git.merge()
 
 
 #function for taking files from git repo and copying to local folder
@@ -83,7 +82,7 @@ def copy_updated_files(localpath):
 	for subdir, dirs, files in os.walk(full_remote_path, topdown=True):
 		this_subdir = subdir.replace(full_remote_path,'') + '/' 
 				
-		if this_subdir in ignored_folders:
+        if this_subdir in ignored_folders:
 			[dirs.remove(d) for d in list(dirs)]
 			continue
 
@@ -128,6 +127,7 @@ def process_properties_files():
 				script_name = os.path.splitext(file)[0].lower()
 				should_update = is_update_time(subdir, script_name, config['DEFAULT']['check_frequency'])
 				if should_update:
+					log_content = str(time.time())
 					log_content += '\nRunning update based on ' + file
 					log_content += '\nTime (UTC): ' + datetime.utcnow().strftime("%d-%m-%Y @ %H:%M:%S")
 
