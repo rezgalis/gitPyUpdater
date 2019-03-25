@@ -19,8 +19,8 @@ def sha256_checksum(filename, block_size=65536):
 
 #function to check if script should be updated
 def is_update_time(subdir, file, freq):
-    should_run_update = True
-    try:
+	should_run_update = True
+	try:
 		f = open(os.path.join(subdir, file)+'.lastlog', 'r')
 		timestamp = int(float(f.readline()))
 		prev_time = datetime.fromtimestamp(timestamp)
