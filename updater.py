@@ -26,7 +26,7 @@ def is_update_time(subdir, file, freq):
 		prev_time = datetime.fromtimestamp(timestamp)
 		f.close()
 		diff = datetime.now() - prev_time		
-		if diff.seconds/60/60<int(freq):
+		if diff.seconds/60<int(freq):
 			should_run_update = False
 	except Exception:
 		 pass
