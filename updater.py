@@ -4,7 +4,7 @@ import os, shutil, configparser, hashlib, time
 from subprocess import Popen, PIPE
 from datetime import datetime
 from git import Repo
-
+ 
 config = configparser.ConfigParser()
 log_content = ''
 
