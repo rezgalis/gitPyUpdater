@@ -81,8 +81,8 @@ def copy_updated_files(localpath):
 
 	for subdir, dirs, files in os.walk(full_remote_path, topdown=True):
 		this_subdir = subdir.replace(full_remote_path,'') + '/' 
-				
-        if this_subdir in ignored_folders:
+
+		if this_subdir in ignored_folders:
 			[dirs.remove(d) for d in list(dirs)]
 			continue
 
